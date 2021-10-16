@@ -1,37 +1,49 @@
 package ui;
 
 class Hud extends dn.Process {
-	public var game(get,never) : Game; inline function get_game() return Game.ME;
-	public var fx(get,never) : Fx; inline function get_fx() return Game.ME.fx;
-	public var level(get,never) : Level; inline function get_level() return Game.ME.level;
+  public var game(get, never):Game;
 
-	var flow : h2d.Flow;
-	var invalidated = true;
+  inline function get_game()
+    return Game.ME;
 
-	public function new() {
-		super(Game.ME);
+  public var fx(get, never):Fx;
 
-		createRootInLayers(game.root, Const.DP_UI);
-		root.filter = new h2d.filter.ColorMatrix(); // force pixel perfect rendering
+  inline function get_fx()
+    return Game.ME.fx;
 
-		flow = new h2d.Flow(root);
-	}
+  public var level(get, never):Level;
 
-	override function onResize() {
-		super.onResize();
-		root.setScale(Const.UI_SCALE);
-	}
+  inline function get_level()
+    return Game.ME.level;
 
-	public inline function invalidate() invalidated = true;
+  var flow:h2d.Flow;
+  var invalidated = true;
 
-	function render() {}
+  public function new() {
+    super(Game.ME);
 
-	override function postUpdate() {
-		super.postUpdate();
+    createRootInLayers(game.root, Const.DP_UI);
+    root.filter = new h2d.filter.ColorMatrix(); // force pixel perfect rendering
 
-		if( invalidated ) {
-			invalidated = false;
-			render();
-		}
-	}
+    flow = new h2d.Flow(root);
+  }
+
+  override function onResize() {
+    super.onResize();
+    root.setScale(Const.UI_SCALE);
+  }
+
+  public inline function invalidate()
+    invalidated = true;
+
+  function render() {}
+
+  override function postUpdate() {
+    super.postUpdate();
+
+    if (invalidated) {
+      invalidated = false;
+      render();
+    }
+  }
 }

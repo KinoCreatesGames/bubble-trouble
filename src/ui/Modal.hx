@@ -1,68 +1,66 @@
 package ui;
 
+import dn.heaps.Controller.ControllerAccess;
+
 class Modal extends ui.Window {
-	public static var ALL : Array<Modal> = [];
-	static var COUNT = 0;
+  public static var ALL:Array<Modal> = [];
 
-	var ca : ControllerAccess;
-	var mask : h2d.Bitmap;
-	var modalIdx : Int;
+  static var COUNT = 0;
 
-	public function new() {
-		super();
+  var ca:ControllerAccess;
+  var mask:h2d.Bitmap;
+  var modalIdx:Int;
 
-		ALL.push(this);
-		modalIdx = COUNT++;
-		if( modalIdx==0 )
-			Game.ME.pause();
+  public function new() {
+    super();
 
-		ca = Main.ME.controller.createAccess("modal", true);
-		mask = new h2d.Bitmap(h2d.Tile.fromColor(0x0, 1, 1, 0.6), root);
-		root.under(mask);
-		dn.Process.resizeAll();
-	}
+    ALL.push(this);
+    modalIdx = COUNT++;
+    if (modalIdx == 0) Game.ME.pause();
 
-	public static function hasAny() {
-		for(e in ALL)
-			if( !e.destroyed )
-				return true;
-		return false;
-	}
+    ca = Main.ME.controller.createAccess("modal", true);
+    mask = new h2d.Bitmap(h2d.Tile.fromColor(0x0, 1, 1, 0.6), root);
+    root.under(mask);
+    dn.Process.resizeAll();
+  }
 
-	override function onDispose() {
-		super.onDispose();
-		ca.dispose();
-		ALL.remove(this);
-		COUNT--;
-		if( !hasAny() )
-			Game.ME.resume();
-	}
+  public static function hasAny() {
+    for (e in ALL)
+      if (!e.destroyed) return true;
+    return false;
+  }
 
-	function closeAllModals() {
-		for(e in ALL)
-			if( !e.destroyed )
-				e.close();
-	}
+  override function onDispose() {
+    super.onDispose();
+    ca.dispose();
+    ALL.remove(this);
+    COUNT--;
+    if (!hasAny()) Game.ME.resume();
+  }
 
-	override function onResize() {
-		super.onResize();
-		if( mask!=null ) {
-			var w = M.ceil( w()/Const.UI_SCALE );
-			var h = M.ceil( h()/Const.UI_SCALE );
-			mask.scaleX = w;
-			mask.scaleY = h;
-		}
-	}
+  function closeAllModals() {
+    for (e in ALL)
+      if (!e.destroyed) e.close();
+  }
 
-	override function postUpdate() {
-		super.postUpdate();
-		mask.visible = modalIdx==0;
-		win.alpha = modalIdx==COUNT-1 ? 1 : 0.6;
-	}
+  override function onResize() {
+    super.onResize();
+    if (mask != null) {
+      var w = M.ceil(w() / Const.UI_SCALE);
+      var h = M.ceil(h() / Const.UI_SCALE);
+      mask.scaleX = w;
+      mask.scaleY = h;
+    }
+  }
 
-	override function update() {
-		super.update();
-		if( ca.bPressed() || ca.isKeyboardPressed(hxd.Key.ESCAPE) )
-			close();
-	}
+  override function postUpdate() {
+    super.postUpdate();
+    mask.visible = modalIdx == 0;
+    win.alpha = modalIdx == COUNT - 1 ? 1 : 0.6;
+  }
+
+  override function update() {
+    super.update();
+    if (ca.bPressed() || ca.isKeyboardPressed(hxd.Key.ESCAPE)) close();
+  }
 }

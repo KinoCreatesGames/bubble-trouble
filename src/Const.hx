@@ -15,6 +15,14 @@ class Const {
 
   public static inline var INFINITE = 999999;
 
+  // Bubble Trouble Consts
+
+  /**
+   * Spawner cooldown within the game.
+   * This will control how often the Adds get spawned. 
+   */
+  public static inline var SPAWN_CD:Int = 6;
+
   /** Unique value generator **/
   public static var NEXT_UNIQ(get, never):Int;
 

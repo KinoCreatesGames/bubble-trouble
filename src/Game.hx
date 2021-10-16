@@ -1,7 +1,8 @@
 import dn.Process;
+import dn.heaps.Controller.ControllerAccess;
 import hxd.Key;
 
-class Game extends Process {
+class Game extends dn.Process {
   public static var ME:Game;
 
   /** Game controller (pad or keyboard) **/
@@ -61,7 +62,7 @@ class Game extends Process {
     trace('LDTk file reloaded');
     #else
     #end
-    reloadCurrentLevel();
+    // reloadCurrentLevel();
   }
 
   // Use the below lines when using LDTk for game creation.
